@@ -153,24 +153,6 @@ Principais elementos:
 
 ---
 
-## Testes de Usabilidade
-
-O sistema foi testado com diferentes perfis:
-
-- pai (40 anos) com familiaridade com tecnologia
-- avô (71 anos) com conhecimento intermediário
-- irmão (10 anos) com uso intuitivo
-
-Resultados:
-
-- o irmão conseguiu utilizar o sistema sozinho
-- o pai utilizou normalmente após breve explicação
-- o avô apresentou leve dificuldade inicial, mas conseguiu utilizar após orientação
-
-Todos os usuários gostaram do sistema e da facilidade de uso.
-
----
-
 ## Estrutura do Projeto
 
 /public → frontend (HTML, CSS, JS)
