@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>FinanTech - Despesas Fixas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<body>
+    <nav class="navbar metas-navbar">
+        <a href="index.html" class="logo-link-topo">
+            <img src="images/logo.png" alt="FinanTech" class="logo-sistema">
+        </a>
+
+        <div class="user-info">
+            <button onclick="window.location.href='index.html'" class="btn-voltar">← Voltar</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="dashboard">
+            <div class="card">
+                <h3>Despesas Fixas</h3>
+                <p>Cadastre e acompanhe seus gastos recorrentes.</p>
+            </div>
+        </section>
+
+        <div class="content-grid">
+            <div class="card">
+                <h3 id="titulo-form-despesa-fixa">Nova Despesa Fixa</h3>
+                <form id="form-despesa-fixa">
+                    <select id="categoria-despesa-fixa" required>
+                        <option value="">Selecione a categoria</option>
+                        <option value="Internet">Internet</option>
+                        <option value="Agua">Água</option>
+                        <option value="Luz">Luz</option>
+                        <option value="Aluguel">Aluguel</option>
+                        <option value="Feira">Feira</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+
+                    <input type="text" id="descricao-despesa-fixa" placeholder="Descrição (Ex: Internet de casa)" required>
+                    <input type="number" id="valor-despesa-fixa" placeholder="Valor (R$)" required>
+                    <input type="date" id="data-despesa-fixa" required>
+
+                    <button type="submit" class="btn-add" id="btn-salvar-despesa-fixa">Salvar Despesa Fixa</button>
+                    <button type="button" class="btn-cancelar-edicao" id="btn-cancelar-edicao-despesa" onclick="cancelarEdicaoDespesaFixa()">Cancelar edição</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Minhas Despesas Fixas</h3>
+                <div id="lista-despesas-fixas"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

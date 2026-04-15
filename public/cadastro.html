@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>FinanTech - Cadastro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<body class="auth-body">
+    <div class="auth-card">
+    <img src="images/logotelas.png" alt="FinanTech" class="logo-auth">
+    <h2>Cadastro</h2>
+
+    <input type="text" id="name" placeholder="Seu nome">
+    <input type="email" id="email" placeholder="Seu e-mail">
+    <input type="password" id="password" placeholder="Sua senha">
+
+    <button class="btn-add" onclick="cadastrar()">Cadastrar</button>
+
+    <p>Já tem conta? <a href="login.html">Faça login aqui</a></p>
+</div>
+
+    <script>
+        async function cadastrar() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            if (!name || !email || !password) {
+                alert("Preencha nome, e-mail e senha.");
+                return;
+            }
+
+            try {
+                const response = await fetch("/users/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert(data.message || "Cadastro realizado com sucesso!");
+                    window.location.href = "login.html";
+                } else {
+                    alert(data.message || data.error || "Erro ao cadastrar");
+                }
+            } catch (error) {
+                alert("Erro ao conectar com o servidor.");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>FinanTech - Resumo Mensal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar metas-navbar">
+        <a href="index.html" class="logo-link-topo">
+            <img src="images/logo.png" alt="FinanTech" class="logo-sistema">
+        </a>
+
+        <div class="user-info">
+            <button onclick="window.location.href='index.html'" class="btn-voltar">← Voltar</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="dashboard">
+            <div class="card">
+                <h3>Resumo Mensal</h3>
+                <p>Visualize suas movimentações por período.</p>
+            </div>
+        </section>
+
+        <div class="content-grid">
+            <div class="card">
+                <h3>Filtrar período</h3>
+                <form id="form-resumo-mensal">
+                    <label for="resumo-data-inicial">Data inicial</label>
+                    <input type="date" id="resumo-data-inicial" required>
+
+                    <label for="resumo-data-final">Data final</label>
+                    <input type="date" id="resumo-data-final" required>
+
+                    <button type="submit" class="btn-add">Buscar Resumo</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Gráfico do Período</h3>
+                <canvas id="graficoResumoMensal"></canvas>
+            </div>
+        </div>
+
+        <section class="dashboard resumo-cards">
+            <div class="card">
+                <h3>Receitas</h3>
+                <p id="resumo-receitas" class="valor-receita">R$ 0,00</p>
+            </div>
+
+            <div class="card">
+                <h3>Despesas</h3>
+                <p id="resumo-despesas" class="valor-despesa">R$ 0,00</p>
+            </div>
+
+            <div class="card">
+                <h3>Despesas Fixas</h3>
+                <p id="resumo-despesas-fixas">R$ 0,00</p>
+            </div>
+
+            <div class="card">
+                <h3>Saldo do Período</h3>
+                <p id="resumo-saldo">R$ 0,00</p>
+            </div>
+        </section>
+
+        <div class="card">
+            <h3>Despesas Fixas no Período</h3>
+            <div id="lista-resumo-despesas-fixas"></div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

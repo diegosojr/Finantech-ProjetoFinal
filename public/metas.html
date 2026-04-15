@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>FinanTech - Metas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<body>
+    <nav class="navbar metas-navbar">
+    <a href="index.html" class="logo-link-topo">
+        <img src="images/logo.png" alt="FinanTech" class="logo-sistema">
+    </a>
+
+    <div class="user-info">
+        <button onclick="window.location.href='index.html'" class="btn-voltar">
+            ← Voltar
+        </button>
+    </div>
+</nav>
+
+    <main class="container">
+        <section class="dashboard">
+            <div class="card">
+                <h3>Minhas Metas Financeiras</h3>
+                <p>Cadastre e acompanhe seus objetivos.</p>
+            </div>
+        </section>
+
+        <div class="content-grid">
+            <div class="card">
+                <h3>Nova Meta</h3>
+                <form id="form-meta">
+                    <input type="text" id="nome-meta" placeholder="Nome da meta (Ex: Viagem)" required>
+                    <input type="number" id="valor-meta" placeholder="Valor da meta (R$)" required>
+                    <input type="date" id="prazo-meta" required>
+                    <button type="submit" class="btn-add">Salvar Meta</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Minhas Metas</h3>
+                <div id="lista-metas"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

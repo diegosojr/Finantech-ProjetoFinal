@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>FinanTech - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <a href="#dashboard-topo" class="logo-link">
+                    <img src="images/logotelasbranco.png" alt="FinanTech" class="logo-sidebar">
+                </a>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="#dashboard-topo" class="sidebar-link">Dashboard</a>
+                <a href="#nova-transacao" class="sidebar-link" onclick="setTipoTransacao('receita')">Nova Receita</a>
+                <a href="#nova-transacao" class="sidebar-link" onclick="setTipoTransacao('despesa')">Nova Despesa</a>
+                <a href="#minhas-transacoes" class="sidebar-link">Minhas Transações</a>
+                <a href="metas.html" class="sidebar-link">Metas</a>
+                <a href="despesas-fixas.html" class="sidebar-link">Despesas Fixas</a>
+                <a href="resumo-mensal.html" class="sidebar-link">Resumo Mensal</a>
+                <button onclick="logout()" class="sidebar-link sidebar-btn">Sair</button>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <span id="nome-usuario">Bem-vindo</span>
+            </header>
+
+            <section class="container" id="dashboard-topo">
+                <section class="dashboard">
+                    <div class="card">
+                        <h3>Saldo Atual</h3>
+                        <p id="saldo">R$ 0,00</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Receitas</h3>
+                        <p id="total-receitas" class="valor-receita">R$ 0,00</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>Despesas</h3>
+                        <p id="total-despesas" class="valor-despesa">R$ 0,00</p>
+                    </div>
+                </section>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <h3>Gráfico: Receitas vs Despesas</h3>
+                        <canvas id="meuGrafico"></canvas>
+                    </div>
+
+                    <div class="card" id="nova-transacao">
+                        <h3>Nova Transação</h3>
+                        <form id="form-transacao">
+                            <select id="tipo" required>
+                                <option value="">Selecione o tipo</option>
+                                <option value="receita">Receita</option>
+                                <option value="despesa">Despesa</option>
+                            </select>
+
+                            <input type="text" id="desc" placeholder="Descrição (Ex: Salário, Aluguel)" required>
+                            <input type="number" id="valor" placeholder="Valor (R$)" required>
+
+                            <select id="categoria" required>
+                                <option value="">Selecione a categoria</option>
+                                <option value="Salario">Salário</option>
+                                <option value="Freelance">Freelance</option>
+                                <option value="Investimento">Investimento</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+
+                            <input type="date" id="data" required>
+
+                            <button type="submit" class="btn-add">Salvar</button>
+                        </form>
+                    </div>
+
+                    <div class="card" id="minhas-transacoes">
+                        <h3>Minhas Transações</h3>
+                        <ul id="lista-transacoes" class="lista-transacoes"></ul>
+                    </div>
+
+                    <div class="card card-click">
+                        <a href="metas.html" class="card-link-area">
+                            <h3>Metas Financeiras</h3>
+                            <p>Gerencie seus objetivos financeiros</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 60%;"></div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="card card-click">
+                        <a href="despesas-fixas.html" class="card-link-area">
+                            <h3>Despesas Fixas</h3>
+                            <p>Cadastre e acompanhe seus gastos recorrentes</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 45%;"></div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="card card-click">
+                        <a href="resumo-mensal.html" class="card-link-area">
+                            <h3>Resumo Mensal</h3>
+                            <p>Visualize receitas, despesas e despesas fixas por período</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 75%;"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="modal-transacao" class="modal-overlay" onclick="fecharModalTransacao(event)">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Detalhes da Transação</h3>
+                <button class="modal-close" onclick="fecharModalTransacao()">×</button>
+            </div>
+
+            <div class="modal-body">
+                <select id="modal-tipo">
+                    <option value="receita">Receita</option>
+                    <option value="despesa">Despesa</option>
+                </select>
+
+                <input type="text" id="modal-descricao" placeholder="Descrição">
+                <input type="number" id="modal-valor" placeholder="Valor">
+
+                <select id="modal-categoria">
+                    <option value="Salario">Salário</option>
+                    <option value="Freelance">Freelance</option>
+                    <option value="Investimento">Investimento</option>
+                    <option value="Outros">Outros</option>
+                </select>
+
+                <input type="date" id="modal-data">
+
+                <div class="acoes-modal">
+                    <button class="btn-editar" onclick="salvarEdicaoTransacao()">Salvar</button>
+                    <button class="btn-excluir" onclick="excluirTransacao()">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
