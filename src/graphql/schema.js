@@ -1,31 +1,49 @@
-const { buildSchema } = require("graphql");
+const {
+  GraphQLSchema,
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLFloat,
+  GraphQLList,
+  GraphQLNonNull
+} = require("graphql");
 
-const schema = buildSchema(`
-  type Transaction {
-    _id: ID
-    userId: String
-    type: String
-    value: Float
-    category: String
-    description: String
-    date: String
+const FixedExpenseType = new GraphQLObjectType({
+  name: "FixedExpense",
+  fields: {
+    _id: { type: GraphQLString },
+    userId: { type: GraphQLString },
+    category: { type: GraphQLString },
+    description: { type: GraphQLString },
+    value: { type: GraphQLFloat },
+    date: { type: GraphQLString },
+    paid: { type: GraphQLString }
   }
+});
 
-  input TransactionInput {
-    type: String!
-    value: Float!
-    category: String!
-    description: String
-    date: String!
+const MonthlySummaryType = new GraphQLObjectType({
+  name: "MonthlySummary",
+  fields: {
+    receitas: { type: GraphQLFloat },
+    despesas: { type: GraphQLFloat },
+    despesasFixas: { type: GraphQLFloat },
+    saldo: { type: GraphQLFloat },
+    fixedExpensesList: { type: new GraphQLList(FixedExpenseType) }
   }
+});
 
-  type Query {
-    getTransactions: [Transaction]
+const RootQueryType = new GraphQLObjectType({
+  name: "Query",
+  fields: {
+    monthlySummary: {
+      type: MonthlySummaryType,
+      args: {
+        startDate: { type: new GraphQLNonNull(GraphQLString) },
+        endDate: { type: new GraphQLNonNull(GraphQLString) }
+      }
+    }
   }
+});
 
-  type Mutation {
-    createTransaction(input: TransactionInput): Transaction
-  }
-`);
-
-module.exports = schema;
+module.exports = new GraphQLSchema({
+  query: RootQueryType
+});

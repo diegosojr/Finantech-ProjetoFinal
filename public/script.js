@@ -4,20 +4,12 @@ let editandoDespesaFixaId = null;
 let grafico;
 let graficoResumoMensal;
 
-// ============================
-// LOGOUT
-// ============================
-
 function logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("nome");
     alert("Você saiu da conta.");
     window.location.href = "login.html";
 }
-
-// ============================
-// PREENCHER TIPO DE TRANSAÇÃO
-// ============================
 
 function setTipoTransacao(tipo) {
     setTimeout(() => {
@@ -29,9 +21,6 @@ function setTipoTransacao(tipo) {
     }, 100);
 }
 
-// ============================
-// LOGIN
-// ============================
 
 async function login() {
     const email = document.getElementById("email")?.value;
@@ -64,10 +53,6 @@ async function login() {
     }
 }
 
-// ============================
-// CADASTRO
-// ============================
-
 async function cadastrar() {
     const name = document.getElementById("name")?.value;
     const email = document.getElementById("email")?.value;
@@ -97,10 +82,6 @@ async function cadastrar() {
         alert("Erro ao conectar com o servidor.");
     }
 }
-
-// ============================
-// PROTEÇÃO DAS PÁGINAS
-// ============================
 
 if (
     paginaAtual.includes("index.html") ||
@@ -140,9 +121,6 @@ if (
     }
 }
 
-// ============================
-// DASHBOARD
-// ============================
 
 async function carregarDashboard(token) {
     try {
@@ -171,9 +149,6 @@ async function carregarDashboard(token) {
     }
 }
 
-// ============================
-// LISTAR TRANSAÇÕES
-// ============================
 
 async function carregarTransacoes(token) {
     try {
@@ -214,10 +189,6 @@ async function carregarTransacoes(token) {
         alert("Erro ao carregar transações.");
     }
 }
-
-// ============================
-// MODAL DE TRANSAÇÃO
-// ============================
 
 function abrirModalTransacao(transacao) {
     transacaoEditandoId = transacao._id;
@@ -301,9 +272,6 @@ async function excluirTransacao() {
     }
 }
 
-// ============================
-// METAS
-// ============================
 
 async function carregarMetas(token) {
     try {
@@ -373,9 +341,6 @@ async function toggleMetaConcluida(id) {
     }
 }
 
-// ============================
-// STATUS DA DESPESA FIXA
-// ============================
 
 function calcularStatusDespesaFixa(despesa) {
     if (despesa.paid) {
@@ -400,9 +365,6 @@ function calcularStatusDespesaFixa(despesa) {
     };
 }
 
-// ============================
-// DESPESAS FIXAS
-// ============================
 
 async function carregarDespesasFixas(token) {
     try {
@@ -563,9 +525,6 @@ async function excluirDespesaFixa(id) {
     }
 }
 
-// ============================
-// GRÁFICO DASHBOARD
-// ============================
 
 function atualizarGrafico(receitas, despesas) {
     const canvas = document.getElementById("meuGrafico");
@@ -589,9 +548,6 @@ function atualizarGrafico(receitas, despesas) {
     });
 }
 
-// ============================
-// RESUMO MENSAL
-// ============================
 
 function prepararResumoMensal() {
     const hoje = new Date();
@@ -622,19 +578,48 @@ async function carregarResumoMensal() {
         const startDate = document.getElementById("resumo-data-inicial").value;
         const endDate = document.getElementById("resumo-data-final").value;
 
-        const response = await fetch(`/finance/monthly-summary?startDate=${startDate}&endDate=${endDate}`, {
-            method: "GET",
-            headers: {
-                Authorization: "Bearer " + token
+        const query = `
+            query MonthlySummary($startDate: String!, $endDate: String!) {
+                monthlySummary(startDate: $startDate, endDate: $endDate) {
+                    receitas
+                    despesas
+                    despesasFixas
+                    saldo
+                    fixedExpensesList {
+                        _id
+                        category
+                        description
+                        value
+                        date
+                        paid
+                    }
+                }
             }
+        `;
+
+        const response = await fetch("/graphql", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({
+                query,
+                variables: {
+                    startDate,
+                    endDate
+                }
+            })
         });
 
-        const data = await response.json();
+        const result = await response.json();
 
-        if (!response.ok) {
-            alert(data.error || "Erro ao carregar resumo mensal");
+        if (result.errors) {
+            alert(result.errors[0].message || "Erro ao carregar resumo mensal");
             return;
         }
+
+        const data = result.data.monthlySummary;
 
         document.getElementById("resumo-receitas").textContent = "R$ " + Number(data.receitas).toFixed(2);
         document.getElementById("resumo-despesas").textContent = "R$ " + Number(data.despesas).toFixed(2);
@@ -701,10 +686,6 @@ function preencherListaResumoDespesasFixas(lista) {
     });
 }
 
-// ============================
-// NOVA TRANSAÇÃO
-// ============================
-
 const formTransacao = document.getElementById("form-transacao");
 
 if (formTransacao) {
@@ -747,9 +728,6 @@ if (formTransacao) {
     });
 }
 
-// ============================
-// NOVA META
-// ============================
 
 const formMeta = document.getElementById("form-meta");
 
@@ -795,9 +773,6 @@ if (formMeta) {
     });
 }
 
-// ============================
-// NOVA / EDITAR DESPESA FIXA
-// ============================
 
 const formDespesaFixa = document.getElementById("form-despesa-fixa");
 
